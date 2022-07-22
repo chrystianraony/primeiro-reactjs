@@ -113,3 +113,7 @@
 .commentList {
   margin-top: 2rem;
 }
+
+.socialLink {
+  display: flex;
+}
