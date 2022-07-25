@@ -22,15 +22,29 @@ export function Post({ author, publishedAt, content }) {
     addSuffix: true,
   });
 
-  function handleCreateNewComment() {
+  function handleCreateNewComment(event) {
     event.preventDefault();
     setcomments([...comments, newCommentText]);
     setNewCommentText('');
   }
 
-  function handleNewCommentChange(){
+  function handleNewCommentChange(event){
     setNewCommentText(event.target.value);
+    event.target.setCustomValidity('');
   }
+
+  function handleNewCommentInvalid(event){
+    event.target.setCustomValidity('Esse Campo é obrigatório!')
+
+  }
+  
+  function deleteComment(commentToDelete){
+    const commentsWithoutDeleteOne = comments.filter(comment => {
+      return comment !== commentToDelete;
+    })
+    setcomments(commentsWithoutDeleteOne);
+  }
+
 
 
   // useEffect(() => {
@@ -60,20 +74,18 @@ export function Post({ author, publishedAt, content }) {
       <div className={styles.content}>
         {content.map((line) => { //line foi criado aqui
           if (line.type == "paragraph") {  //se a linha tiver um tipo paragrafo retorne o conteudo dela
-            return <p>{line.content}</p>;
+            return <p key={line.content}>{line.content}</p>;
           } else if (line.type == "link") {  //senao se tiver um link retorne o conteudo do link adicionado
             return (
-              <p>
-                <a href="#">{line.content}</a>
-              </p>
-            );
+              <p key={line.content}><a href="#">{line.content}</a></p>
+            )
           } else if (line.type == "social") {
             return (
-              <div className={styles.socialLink}>
+              <div key={line.content} className={styles.socialLink}>
                 {line.content.map((item) => {
                   return (
-                    <p>
-                      <a href="#">{item.content}</a>
+                    <p key={item.content}>
+                      <a href={item.href}>{item.content}</a>
                     </p>
                   );
                 })}
@@ -90,6 +102,8 @@ export function Post({ author, publishedAt, content }) {
           placeholder="Deixe um comentário" 
           value={newCommentText}  //dizendo para pegar o valor inicial do newCommentText, para deixar o textarea em branco
           onChange={handleNewCommentChange}
+          onInvalid={handleNewCommentInvalid}
+          required
         />
 
         <footer>
@@ -98,8 +112,14 @@ export function Post({ author, publishedAt, content }) {
       </form>
 
       <div className={styles.commentList}>
-        {comments.map((comment) => {
-          return <Comment content={comment} />;
+        {comments.map((comment, index) => {
+          return (
+            <Comment 
+              key={index} 
+              content={comment} 
+              onDeleteComment={deleteComment}
+            />
+          )
         })}
       </div>
     </article>
