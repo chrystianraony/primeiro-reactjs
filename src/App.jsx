@@ -1,6 +1,6 @@
-import { Header } from "./components/Header";
-import { Post } from "./components/Post";
-import { Sidebar } from "./components/Sidebar";
+import { Header } from "./components/Header/Header";
+import { Post } from "./components/Post/Post";
+import { Sidebar } from "./components/Sidebar/Sidebar";
 
 import styles from "./App.module.css";
 import "./global.css";
@@ -25,20 +25,20 @@ const posts = [
     ],
     publishedAt: new Date('2022-07-22 15:45:15'),
   },
-  {
-    id:2,
-    author:{
-      avatarUrl: 'https://github.com/chrystianraony.png',
-      name: 'chrystian Raony',
-      role: 'Designer'
-    },
-    content: [
-      {type: 'paragraph', content: 'Fala Galera'},
-      {type: 'paragraph', content: 'Acabei de subir mais um projeto no meu portifa. É um projeto que fiz no NLW Return, evento da Rocketseat. O nome do projeto é DoctorCare 🚀'},
-      {type: 'link', content: 'jane.design/doctorcare'}
-    ],
-    publishedAt: new Date('2022-07-21 13:45:15'),
-  }
+  // {
+  //   id:2,
+  //   author:{
+  //     avatarUrl: 'https://github.com/chrystianraony.png',
+  //     name: 'chrystian Raony',
+  //     role: 'Designer'
+  //   },
+  //   content: [
+  //     {type: 'paragraph', content: 'Fala Galera'},
+  //     {type: 'paragraph', content: 'Acabei de subir mais um projeto no meu portifa. É um projeto que fiz no NLW Return, evento da Rocketseat. O nome do projeto é DoctorCare 🚀'},
+  //     {type: 'link', content: 'jane.design/doctorcare'}
+  //   ],
+  //   publishedAt: new Date('2022-07-21 13:45:15'),
+  // }
 ]
 
 export function App() {

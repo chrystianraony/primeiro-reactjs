@@ -2,9 +2,9 @@ import { format, formatDistanceToNow, set } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
 import { Link } from "phosphor-react";
 import { useEffect, useState } from "react";
-import { Avatar } from "./Avatar";
-import { Comment } from "./Comment";
-import styles from "./Post.module.css";
+import { Avatar } from "../Avatar/Avatar";
+import { Comment } from "../Comment/Comment";
+import styles from "../Post/Post.module.css";
 
 export function Post({ author, publishedAt, content }) {
   const [comments, setcomments] = useState(['Post muito bacana']);
@@ -37,7 +37,7 @@ export function Post({ author, publishedAt, content }) {
     event.target.setCustomValidity('Esse Campo é obrigatório!')
 
   }
-  
+
   function deleteComment(commentToDelete){
     const commentsWithoutDeleteOne = comments.filter(comment => {
       return comment !== commentToDelete;
