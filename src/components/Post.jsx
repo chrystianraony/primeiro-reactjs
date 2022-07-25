@@ -1,11 +1,16 @@
-import { format, formatDistanceToNow } from "date-fns";
+import { format, formatDistanceToNow, set } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
 import { Link } from "phosphor-react";
+import { useEffect, useState } from "react";
 import { Avatar } from "./Avatar";
 import { Comment } from "./Comment";
 import styles from "./Post.module.css";
 
 export function Post({ author, publishedAt, content }) {
+  const [comments, setcomments] = useState(['Post muito bacana']);
+
+  const [newCommentText, setNewCommentText] = useState('');
+
   const publishedDateFormatted = format(
     publishedAt,
     "d 'de' LLLL 'às' H:mm'h'", // formatando data por date-fns
@@ -16,6 +21,21 @@ export function Post({ author, publishedAt, content }) {
     locale: ptBR,
     addSuffix: true,
   });
+
+  function handleCreateNewComment() {
+    event.preventDefault();
+    setcomments([...comments, newCommentText]);
+    setNewCommentText('');
+  }
+
+  function handleNewCommentChange(){
+    setNewCommentText(event.target.value);
+  }
+
+
+  // useEffect(() => {
+  //   console.log("COMMENTS ALTERADO: ", comments.length)
+  // }, [comments])
 
   return (
     <article className={styles.post}>
@@ -38,13 +58,10 @@ export function Post({ author, publishedAt, content }) {
 
       {/*Editando o conteudo que foi setado como paragrafo e link*/}
       <div className={styles.content}>
-        {content.map((line) => {
-          //line foi criado aqui
-          if (line.type == "paragraph") {
-            //se a linha tiver um tipo paragrafo retorne o conteudo dela
+        {content.map((line) => { //line foi criado aqui
+          if (line.type == "paragraph") {  //se a linha tiver um tipo paragrafo retorne o conteudo dela
             return <p>{line.content}</p>;
-          } else if (line.type == "link") {
-            //senao se tiver um link retorne o conteudo do link adicionado
+          } else if (line.type == "link") {  //senao se tiver um link retorne o conteudo do link adicionado
             return (
               <p>
                 <a href="#">{line.content}</a>
@@ -65,10 +82,15 @@ export function Post({ author, publishedAt, content }) {
           }
         })}
       </div>
-      <form className={styles.commentForm}>
+      <form onSubmit={handleCreateNewComment} className={styles.commentForm}>
         <strong>Deixe seu feedback</strong>
 
-        <textarea placeholder="Deixe um comentário" />
+        <textarea 
+          name="comment"
+          placeholder="Deixe um comentário" 
+          value={newCommentText}  //dizendo para pegar o valor inicial do newCommentText, para deixar o textarea em branco
+          onChange={handleNewCommentChange}
+        />
 
         <footer>
           <button type="submit">Publicar</button>
@@ -76,9 +98,9 @@ export function Post({ author, publishedAt, content }) {
       </form>
 
       <div className={styles.commentList}>
-        <Comment />
-        <Comment />
-        <Comment />
+        {comments.map((comment) => {
+          return <Comment content={comment} />;
+        })}
       </div>
     </article>
   );
